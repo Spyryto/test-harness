@@ -114,21 +114,21 @@ function skipAll(string $reason) {
 	$skippedAllReason = $reason;
 }
 
-// Matchers
+/////[   Matchers   ]///////////////////////////////////////////////////////////
 
-function equals($expected) {
+function equals ($expected) {
 	return function ($actual) use ($expected) {
 		expectEquals($actual, $expected);
 	};
 }
 
-function is($expected) {
+function is ($expected) {
 	return function ($actual) use ($expected) {
 		expectEquals($actual, $expected);
 	};
 }
 
-function isA( string $className ) {
+function isA (string $className) {
 	return function ( $actual ) use ( $className ) {
 		if ( ! is_a( $actual, $className )) {
 			throw new AssertionError( "Object is not a $className");
@@ -136,7 +136,7 @@ function isA( string $className ) {
 	};
 }
 
-function throws() {
+function throws () {
 	return function(Closure $fn) {
 		try {
 			$fn();
@@ -149,7 +149,7 @@ function throws() {
 	};
 }
 
-function throwsA( string $throwableType ) {
+function throwsA (string $throwableType) {
 	return function( Closure $fn ) use ($throwableType) {
 		try {
 			$fn();
@@ -173,6 +173,27 @@ function throwsA( string $throwableType ) {
 	// };
 }
 
+/////[   Aliases   ]////////////////////////////////////////////////////////////
+
+function expect equals ($exp1, $exp2)
+{
+	expectEquals ($exp1, $exp2);
+}
+
+function skip all (string $reason)
+{
+	return skipAll ($reason);
+}
+
+function is a (string $className)
+{
+	return isA ($className);
+}
+
+function throws a (string $throwableType)
+{
+	return throwsA ($throwableType);
+}
 function _type_($x) {
 	$type = gettype($x);
 	return $type == 'object' ? get_class($x) : $type;
