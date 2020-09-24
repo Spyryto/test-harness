@@ -35,9 +35,9 @@ $failedTests = 0;
 $totalTests = 0;
 $skippedTests = 0;
 
-function describe(string $group) {
+function describe (...$args) {
 	global $currentGroup;
-	$currentGroup = $group;
+	$currentGroup = join (' ', $args);
 }
 
 function it(string $description, Closure $test) {
