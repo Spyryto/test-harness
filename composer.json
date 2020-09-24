@@ -1,0 +1,14 @@
+{
+    "name": "spyryto/test-harness",
+    "description": "Easy-to-read and quick-to-write tests without configuration",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Spyryto",
+            "email": "danielezecchin@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    }
+}
