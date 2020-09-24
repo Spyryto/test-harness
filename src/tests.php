@@ -194,6 +194,9 @@ function throws a (string $throwableType)
 {
 	return throwsA ($throwableType);
 }
+
+/////[   Utilities   ]//////////////////////////////////////////////////////////
+
 function _type_($x) {
 	$type = gettype($x);
 	return $type == 'object' ? get_class($x) : $type;
@@ -204,7 +207,31 @@ function i( $x ) {
 	return $x;
 }
 
+function checkCommandLineOptions()
+{
+	$args = array_slice($GLOBALS['argv'], 1);
+	foreach ($args as $arg) {
+		@list($name, $values) = explode('=', $arg);
+		if (in_array($name, ['prepend'])) {
+			$argsList = $values ? explode(',', $values) : [];
+			call_user_func_array($name, $argsList);
+		} else {
+			die("Invalid option '$name'.");
+		}
+	}
+}
+
+function prepend(...$files)
+{
+	foreach ($files as $file) include $file;
+}
+
+/////[   Errors   ]/////////////////////////////////////////////////////////////
+
 class TestDoesNotThrowException extends Exception {}
 
+/////[   Main   ]/////////////////////////////////////////////////////////////
+
+checkCommandLineOptions();
 runAll(__DIR__ . '/../..');
 response();
