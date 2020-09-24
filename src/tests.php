@@ -1,6 +1,6 @@
 <?php
 
-// delete all files and sub-folders from a folder
+// Delete all files and sub-folders from a folder.
 function runAll($dir) {
 	global $currentGroup, $skippedTests, $passedTests;
 	global $skipNext;
