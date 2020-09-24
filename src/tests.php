@@ -40,7 +40,7 @@ function describe (...$args) {
 	$currentGroup = join (' ', $args);
 }
 
-function it(string $description, Closure $test) {
+function it (string $description, Closure $test) {
 	global $currentGroup, $passedTests, $failedTests, $skippedTests, $totalTests;
 	global $skipNext, $skipReason, $skipAll, $skippedInModule;
 	$totalTests++;
@@ -67,7 +67,7 @@ function it(string $description, Closure $test) {
 	}
 }
 
-function response() {
+function response () {
 	global $passedTests, $failedTests, $skippedTests, $totalTests;
 	echo PHP_EOL;
 	if ($skippedTests) echo "Skipped tests : $skippedTests/$totalTests", PHP_EOL;
@@ -75,7 +75,7 @@ function response() {
 	if ($failedTests ) echo "Failed tests  : $failedTests/$totalTests", PHP_EOL;
 }
 
-function expectEquals($exp1, $exp2) {
+function expectEquals ($exp1, $exp2) {
 	if ($exp1 !== $exp2) {
 		$value1 = '(' . _type_( $exp1 ) . ') ' . var_export( $exp1, true );
 		$value2 = '(' . _type_( $exp2 ) . ') ' . var_export( $exp2, true );
