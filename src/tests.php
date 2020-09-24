@@ -87,8 +87,13 @@ function expectEquals($exp1, $exp2) {
 	}
 }
 
-function expect($actual, Closure $matcher) {
-	$matcher($actual);
+function expect ($actual, Closure $matcher = null)
+{
+	if (func_num_args() === 1):
+		expectEquals ($actual, true);
+		return;
+	endif;
+	$matcher ($actual);
 }
 
 $skipNext = false;
