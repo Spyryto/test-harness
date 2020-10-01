@@ -130,7 +130,8 @@ function is ($expected) {
 
 function isA (string $className) {
 	return function ( $actual ) use ( $className ) {
-		if ( ! is_a( $actual, $className )) {
+		// if ( ! is_a( $actual, $className )) {
+		if ( _type_( $actual) !== $className ) {
 			throw new AssertionError( "Object is not a $className");
 		}
 	};
@@ -209,16 +210,22 @@ function i( $x ) {
 
 function checkCommandLineOptions()
 {
-	$args = array_slice($GLOBALS['argv'], 1);
-	foreach ($args as $arg) {
-		@list($name, $values) = explode('=', $arg);
-		if (in_array($name, ['prepend'])) {
-			$argsList = $values ? explode(',', $values) : [];
-			call_user_func_array($name, $argsList);
-		} else {
-			die("Invalid option '$name'.");
-		}
-	}
+	$args =
+		PHP_SAPI == 'cli' ? array_slice ($GLOBALS ['argv'], 1)
+		:                   $_GET
+	;
+	foreach ($args as $arg):
+		@list ($name, $values) = explode ('=', $arg);
+		if (in_array ($name, ['prepend'])):
+			$argsList =
+				$values ? explode (',', $values)
+				:         []
+			;
+			call_user_func_array ($name, $argsList);
+		else:
+			die ("Invalid option '$name'.");
+		endif;
+	endforeach;
 }
 
 function prepend(...$files)
