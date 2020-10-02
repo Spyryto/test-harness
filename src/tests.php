@@ -135,10 +135,10 @@ function is ($expected) {
 
 function isA (string $className) {
 	return function ( $actual ) use ( $className ) {
-		// if ( ! is_a( $actual, $className )) {
-		if ( _type_( $actual) !== $className ) {
+		if ( ! is_a ($actual, $className) &&
+			_type_ ($actual) !== $className):
 			throw new AssertionError( "Object is not a $className");
-		}
+		endif;
 	};
 }
 
