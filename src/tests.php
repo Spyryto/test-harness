@@ -114,6 +114,11 @@ function skipAll(string $reason) {
 	$skippedAllReason = $reason;
 }
 
+function cleanup (Closure $cleanup_function)
+{
+	register_shutdown_function($cleanup_function);
+}
+
 /////[   Matchers   ]///////////////////////////////////////////////////////////
 
 function equals ($expected) {
@@ -162,16 +167,6 @@ function throwsA (string $throwableType) {
 			}
 		}
 	};
-	// return function(Closure $fn) {
-	// 	try {
-	// 		$fn();
-	// 		throw new TestDoesNotThrowException('Test should throw');
-	// 	} catch (TestDoesNotThrowException $e) {
-	// 		throw $e;
-	// 	} catch (Throwable $e) {
-	// 		// Test passed
-	// 	}
-	// };
 }
 
 /////[   Aliases   ]////////////////////////////////////////////////////////////
