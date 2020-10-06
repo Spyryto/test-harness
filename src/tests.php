@@ -61,9 +61,22 @@ function it (string $description, Closure $test) {
 		echo PHP_EOL, "*** ERROR ***", PHP_EOL;
 		echo "Test not passed: $currentGroup $description", PHP_EOL;
 		$failedTests++;
-		echo $e->getMessage(), PHP_EOL;
-		$error = $e->getTrace()[1];
-		echo $error['file'], ':', $error['line'], PHP_EOL, PHP_EOL;
+		echo $e->getMessage(), PHP_EOL, PHP_EOL;
+		echo "Trace:", PHP_EOL;
+		printTrace($e);
+		echo PHP_EOL;
+		// echo $e->getTraceAsString(), PHP_EOL, PHP_EOL;
+		// $error = $e->getTrace()[1];
+		// echo $error['file'], ':', $error['line'], PHP_EOL, PHP_EOL;
+	}
+}
+
+function printTrace (Throwable $exception)
+{
+	foreach ($exception->getTrace() as $key => $call) {
+		if ($call['file'] != __FILE__) {
+			printf ("* %s(%s) \n", $call['file'], $call['line'] );
+		}
 	}
 }
 
@@ -135,9 +148,13 @@ function is ($expected) {
 
 function isA (string $className) {
 	return function ( $actual ) use ( $className ) {
+		$actual_type = _type_ ($actual);
 		if ( ! is_a ($actual, $className) &&
-			_type_ ($actual) !== $className):
-			throw new AssertionError( "Object is not a $className");
+			$actual_type !== $className):
+			throw new AssertionError
+			(
+				"Object is not a $className, it is a $actual_type"
+			);
 		endif;
 	};
 }
