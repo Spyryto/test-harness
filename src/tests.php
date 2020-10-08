@@ -220,19 +220,26 @@ function i( $x ) {
 	return $x;
 }
 
+function arguments ()
+{
+	if (PHP_SAPI == 'cli'):
+		$pairs = array_slice ($GLOBALS ['argv'], 1);
+		$arguments = [];
+		foreach ($pairs as $pair):
+			list ($name, $value) = explode ('=', $pair);
+			$arguments [$name] = $value;
+		endforeach;
+		return $arguments;
+	else:
+		return $_GET;
+	endif;
+}
+
 function checkCommandLineOptions()
 {
-	$args =
-		PHP_SAPI == 'cli' ? array_slice ($GLOBALS ['argv'], 1)
-		:                   $_GET
-	;
-	foreach ($args as $arg):
-		@list ($name, $values) = explode ('=', $arg);
+	foreach (arguments () as $name => $values):
 		if (in_array ($name, ['prepend'])):
-			$argsList =
-				$values ? explode (',', $values)
-				:         []
-			;
+			$argsList = $values ? explode (',', $values) : [];
 			call_user_func_array ($name, $argsList);
 		else:
 			die ("Invalid option '$name'.");
@@ -242,7 +249,12 @@ function checkCommandLineOptions()
 
 function prepend(...$files)
 {
-	foreach ($files as $file) include $file;
+	foreach ($files as $file):
+		$dir path = __DIR__ . '/../..';
+		$file path = ltrim ($file, '/\\');
+		$include file = realpath ("$dir path/$file path");
+		include $include file;
+	endforeach;
 }
 
 /////[   Errors   ]/////////////////////////////////////////////////////////////
