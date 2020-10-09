@@ -263,6 +263,10 @@ class TestDoesNotThrowException extends Exception {}
 
 /////[   Main   ]/////////////////////////////////////////////////////////////
 
+if (PHP_SAPI !== 'cli') echo '<pre>';
+
 checkCommandLineOptions();
 runAll(__DIR__ . '/../..');
 response();
+
+if (PHP_SAPI !== 'cli') echo '</pre>';
