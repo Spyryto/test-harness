@@ -81,11 +81,12 @@ function printTrace (Throwable $exception)
 }
 
 function response () {
-	global $passedTests, $failedTests, $skippedTests, $totalTests;
+	global $passedTests, $failedTests, $skippedTests, $totalTests, $allFine;
 	echo PHP_EOL;
 	if ($skippedTests) echo "Skipped tests : $skippedTests/$totalTests", PHP_EOL;
 	if ($passedTests ) echo "Passed tests  : $passedTests/$totalTests", PHP_EOL;
 	if ($failedTests ) echo "Failed tests  : $failedTests/$totalTests", PHP_EOL;
+	$allFine = $failedTests == 0;
 }
 
 function expectEquals ($exp1, $exp2) {
@@ -114,6 +115,7 @@ $skipReason = '';
 $skipAll  = false;
 $skippedInModule = 0;
 $skippedAllReason = '';
+$allFine = false;
 
 function skip(string $reason) {
 	global $skipNext,$skipReason;
@@ -263,10 +265,18 @@ class TestDoesNotThrowException extends Exception {}
 
 /////[   Main   ]/////////////////////////////////////////////////////////////
 
-if (PHP_SAPI !== 'cli') echo '<pre>';
+if (PHP_SAPI !== 'cli') {
+	echo '<pre>';
+	register_shutdown_function (function () {
+		global $allFine;
+		if ($allFine) {
+			echo '</pre><style> body { background: #00ff0022 }</style>';
+		} else {
+			echo '</pre><style> body { background: #ff000022 }</style>';
+		}
+	});
+}
 
 checkCommandLineOptions();
 runAll(__DIR__ . '/../..');
 response();
-
-if (PHP_SAPI !== 'cli') echo '</pre>';
